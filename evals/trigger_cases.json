@@ -1,0 +1,199 @@
+{
+  "recommended_threshold": 0.4,
+  "description_required_concepts": [
+    "review",
+    "source",
+    "unit",
+    "reference",
+    "markdown"
+  ],
+  "positive_concepts": {
+    "review": [
+      "审核镜头",
+      "镜头审核",
+      "审核分镜",
+      "图文审核卡",
+      "审核卡",
+      "检查景别",
+      "景别角度",
+      "连续性检查",
+      "shot review",
+      "review shots"
+    ],
+    "source": [
+      "导演稿",
+      "导演母版",
+      "分镜稿",
+      "分镜表",
+      "director script",
+      "storyboard draft"
+    ],
+    "unit": [
+      "视频生成单元",
+      "视频单元",
+      "生成单元",
+      "单元切分",
+      "切成单元",
+      "generation units",
+      "split units",
+      "每个视频段",
+      "逐段绑定"
+    ],
+    "reference": [
+      "参考图",
+      "关键图",
+      "左图右文",
+      "每镜附图",
+      "绑定哪几张图",
+      "起始关键帧",
+      "首帧",
+      "首尾帧",
+      "reference images",
+      "keyframes"
+    ],
+    "markdown": [
+      "四列",
+      "图文审核卡",
+      "左图右文",
+      "每镜附图",
+      "静态 HTML",
+      "方案 A",
+      "图片文字对齐",
+      "Markdown",
+      "MD审核",
+      "MD表",
+      "four-column",
+      "六列"
+    ]
+  },
+  "negative_patterns": [
+    "剧本改编",
+    "改编成剧本",
+    "导演定调",
+    "构图探索",
+    "九列",
+    "xlsx",
+    "写视频提示词",
+    "生视频提示词",
+    "生图提示词",
+    "打开分镜审核台",
+    "打开审核台",
+    "LibTV绑定",
+    "绑定LibTV",
+    "运行节点",
+    "直接生图",
+    "生成角色图",
+    "后期剪辑",
+    "剪成成片"
+  ],
+  "should_trigger": [
+    {
+      "text": "用导演稿审核镜头，先检查景别角度。",
+      "family": "cn_review_director_source"
+    },
+    {
+      "text": "把这份分镜稿做成四列 Markdown，方便我审核分镜。",
+      "family": "cn_four_column_review"
+    },
+    {
+      "text": "镜头审核已经通过，把这一段切成视频生成单元。",
+      "family": "cn_review_to_units"
+    },
+    {
+      "text": "按导演母版把第二场做单元切分。",
+      "family": "cn_source_to_units"
+    },
+    {
+      "text": "每个视频单元应该绑定哪些参考图，先给我选择计划。",
+      "family": "cn_units_to_references"
+    },
+    {
+      "text": "把这一场做成左图右文的图文审核卡，没有对应图片就留空。",
+      "family": "cn_visual_review_card"
+    },
+    {
+      "text": "Markdown 图片和画面台词会错位，按方案 A 做成静态 HTML 审核卡。",
+      "family": "cn_static_html_review_card"
+    },
+    {
+      "text": "审核卡通过了，列出每个视频段实际绑定哪几张图。",
+      "family": "cn_segment_image_binding"
+    },
+    {
+      "text": "给这份导演稿做 MD审核，只保留四列。",
+      "family": "cn_md_source"
+    },
+    {
+      "text": "Review shots from this director script and return a four-column Markdown table.",
+      "family": "en_review_source"
+    },
+    {
+      "text": "Split these generation units and choose the required reference images or keyframes.",
+      "family": "en_units_references"
+    },
+    {
+      "text": "这份分镜表的连续性检查通过后，再切成单元。",
+      "family": "cn_continuity_units"
+    },
+    {
+      "text": "检查导演稿中的特殊机位，然后给首帧参考图建议。",
+      "family": "cn_review_reference"
+    },
+    {
+      "text": "按项目六列约定审核导演稿，检查镜头和连续性。",
+      "family": "project_six_column_review"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "把这篇小说做剧本改编。",
+      "family": "screenplay_adaptation"
+    },
+    {
+      "text": "从导演定调开始，给我完整九列分镜和xlsx。",
+      "family": "director_master_full"
+    },
+    {
+      "text": "给这一镜写视频提示词，适配 Seedance。",
+      "family": "video_prompt"
+    },
+    {
+      "text": "打开分镜审核台继续审场2。",
+      "family": "review_desk"
+    },
+    {
+      "text": "把这些图片绑定LibTV并运行节点。",
+      "family": "libtv_execution"
+    },
+    {
+      "text": "根据美术风格生成角色图和场景资产。",
+      "family": "asset_generation"
+    },
+    {
+      "text": "把现有视频后期剪辑成成片。",
+      "family": "editing"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "这个单镜头的运镜怎么写得更有冲击力？",
+      "family": "single_prompt_advice"
+    },
+    {
+      "text": "帮我审核当前导出的 MP4 有没有穿帮。",
+      "family": "finished_video_review"
+    },
+    {
+      "text": "从这篇文章里选一张主视觉图片。",
+      "family": "article_image_selection"
+    },
+    {
+      "text": "解释一下首尾帧生成是什么。",
+      "family": "explain_only"
+    },
+    {
+      "text": "用 cinema-dna 给这场关键戏探索三种构图和观看立场。",
+      "family": "cinema_dna_composition_exploration"
+    }
+  ]
+}

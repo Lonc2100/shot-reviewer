@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "root": "D:\\��ý��\\���»����\\���� ai����\\��ԴSkills_20261022\\shot-reviewer",
+  "failures": [],
+  "warnings": [
+    "README may be missing natural examples",
+    "README may be missing verification commands",
+    "README may be missing troubleshooting",
+    "reports/creation-handoff.md may not mention the current manifest version"
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "ok": true,
+  "threshold": 0.4,
+  "description_concepts": [
+    "markdown",
+    "reference",
+    "review",
+    "source",
+    "unit"
+  ],
+  "missing_description_concepts": [],
+  "summary": {
+    "total": 26,
+    "passed": 26,
+    "false_positive": 0,
+    "false_negative": 0,
+    "pass_rate": 1.0
+  },
+  "failures": [],
+  "results": {
+    "should_trigger": [
+      {
+        "prompt": "用导演稿审核镜头，先检查景别角度。",
+        "family": "cn_review_director_source",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "review",
+          "source"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "把这份分镜稿做成四列 Markdown，方便我审核分镜。",
+        "family": "cn_four_column_review",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "markdown",
+          "review",
+          "source"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "镜头审核已经通过，把这一段切成视频生成单元。",
+        "family": "cn_review_to_units",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "review",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "按导演母版把第二场做单元切分。",
+        "family": "cn_source_to_units",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "source",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "每个视频单元应该绑定哪些参考图，先给我选择计划。",
+        "family": "cn_units_to_references",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "reference",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "把这一场做成左图右文的图文审核卡，没有对应图片就留空。",
+        "family": "cn_visual_review_card",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "markdown",
+          "reference",
+          "review"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Markdown 图片和画面台词会错位，按方案 A 做成静态 HTML 审核卡。",
+        "family": "cn_static_html_review_card",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "markdown",
+          "review"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "审核卡通过了，列出每个视频段实际绑定哪几张图。",
+        "family": "cn_segment_image_binding",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "reference",
+          "review",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "给这份导演稿做 MD审核，只保留四列。",
+        "family": "cn_md_source",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "markdown",
+          "source"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Review shots from this director script and return a four-column Markdown table.",
+        "family": "en_review_source",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "markdown",
+          "review",
+          "source"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Split these generation units and choose the required reference images or keyframes.",
+        "family": "en_units_references",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "reference",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "这份分镜表的连续性检查通过后，再切成单元。",
+        "family": "cn_continuity_units",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "review",
+          "source",
+          "unit"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "检查导演稿中的特殊机位，然后给首帧参考图建议。",
+        "family": "cn_review_reference",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "reference",
+          "source"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "按项目六列约定审核导演稿，检查镜头和连续性。",
+        "family": "project_six_column_review",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "markdown",
+          "source"
+        ],
+        "negative_pattern": null
+      }
+    ],
+    "should_not_trigger": [
+      {
+        "prompt": "把这篇小说做剧本改编。",
+        "family": "screenplay_adaptation",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "剧本改编"
+      },
+      {
+        "prompt": "从导演定调开始，给我完整九列分镜和xlsx。",
+        "family": "director_master_full",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "导演定调"
+      },
+      {
+        "prompt": "给这一镜写视频提示词，适配 Seedance。",
+        "family": "video_prompt",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "写视频提示词"
+      },
+      {
+        "prompt": "打开分镜审核台继续审场2。",
+        "family": "review_desk",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "打开分镜审核台"
+      },
+      {
+        "prompt": "把这些图片绑定LibTV并运行节点。",
+        "family": "libtv_execution",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "绑定LibTV"
+      },
+      {
+        "prompt": "根据美术风格生成角色图和场景资产。",
+        "family": "asset_generation",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "生成角色图"
+      },
+      {
+        "prompt": "把现有视频后期剪辑成成片。",
+        "family": "editing",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "后期剪辑"
+      }
+    ],
+    "near_neighbor": [
+      {
+        "prompt": "这个单镜头的运镜怎么写得更有冲击力？",
+        "family": "single_prompt_advice",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "帮我审核当前导出的 MP4 有没有穿帮。",
+        "family": "finished_video_review",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "从这篇文章里选一张主视觉图片。",
+        "family": "article_image_selection",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "解释一下首尾帧生成是什么。",
+        "family": "explain_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "reference"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "用 cinema-dna 给这场关键戏探索三种构图和观看立场。",
+        "family": "cinema_dna_composition_exploration",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      }
+    ]
+  }
+}

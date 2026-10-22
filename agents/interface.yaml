@@ -1,0 +1,48 @@
+interface:
+  display_name: "Shot Reviewer"
+  short_description: "审核导演镜头，做图文卡，切单元并绑定参考图"
+  default_prompt: "使用 $shot-reviewer 先确认用户指定范围内当前采用的导演稿及项目列式，用户／项目指定优先，未指定才默认四列。格式检查与导演语义复核分开；哈希相同不代表旧稿仍被采用。需要重设计观看对象、调度或转场时回到项目导演流程，不以排表代替创作。逐镜图文默认舒服版左一小图右一栏文字，复用 CSS，无对应图留空；只有核对视频段多张绑定图时使用方案 A。镜头与图片通过后再建立参考包并按模型容量规划生成单元。不得编写最终提示词、生成图片编号、连线或运行模型。用户明确要求的修改执行，AI 剧情建议保留为待审。"
+  examples:
+    - "审核这份导演稿的第二场，只给我四列 MD"
+    - "检查这些镜头的景别、特殊角度和动作衔接"
+    - "审核通过了，把第二场切成视频生成单元"
+    - "这些单元该选哪些关键图，分别只负责什么"
+    - "把这场做成左图右文审核卡，没有对应图片就留空"
+    - "按方案 A 做轻便的静态 HTML 审核卡，左边绑定图右边逐镜解释"
+    - "审核卡通过后，列出每个视频段实际绑定哪几张图"
+    - "把2-03改成低机位近景，直接更新导演母版"
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+    - "agent-skills-compatible"
+  activation:
+    mode: "manual-or-description-match"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "pwsh"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    generated_public_claims: "evidence-bound"
+  permissions:
+    network: "read-only official model documentation or provider schema lookup only when a target model affects unit slicing or reference mode"
+    file_write: "versioned artifacts/shot-review outputs; director master only on explicit user instruction or after approval of an AI-proposed change; paired baseline only for approved story/dialogue synchronization"
+    subprocess: "read-only search, SHA-256 hashing, package validation and eval; no model run, upload, paid submission, publication or deletion"
+    interactive: "ask only when source authority, review scope, or a story-changing choice cannot be discovered"
+  degradation:
+    openai: "canonical-local-skill"
+    claude: "neutral-markdown-workflow"
+    generic: "markdown-workflow"
+    agent-skills-compatible: "canonical-source"
+gates:
+  production:
+    - "root-only SKILL.md"
+    - "user/project-selected column contract, four-column fallback"
+    - "source SHA-256 freshness check"
+    - "shot review approval before generation planning"
+    - "semantic reference selection separated from platform binding"
+    - "trigger and recorded-fixture evals"
