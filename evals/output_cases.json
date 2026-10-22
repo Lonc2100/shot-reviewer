@@ -1,0 +1,151 @@
+{
+  "evidence_type": "recorded_fixture",
+  "provider_backed": false,
+  "human_blind_review": false,
+  "cases": [
+    {
+      "id": "compact-four-column-review",
+      "prompt": "审核这份导演稿，只给我方便看的四列 MD。",
+      "input_files": [
+        "evals/fixtures/director-sample.md"
+      ],
+      "baseline_output": "原输入包含时长和衔接列，普通平视、正面、固定等信息全部保留。",
+      "with_skill_output": "evals/fixtures/expected-shot-review.md",
+      "assertions": [
+        "主表表头严格等于 镜号|景别／角度|画面内容|台词",
+        "主表不存在时长、衔接、状态、起幅或收幅列",
+        "普通平视、正面、固定被省略",
+        "低机位俯拍和肩后关系被保留",
+        "画面内容只包含可见主体、动作和结果"
+      ],
+      "human_notes": "检查删减后是否仍足以判断镜头，而不是把所有信息机械删短。"
+    },
+    {
+      "id": "action-chain-unit-slicing",
+      "prompt": "镜头审核通过，把这段切成视频生成单元并选择参考图。",
+      "input_files": [
+        "evals/fixtures/director-sample.md",
+        "evals/fixtures/expected-shot-review.md"
+      ],
+      "baseline_output": "按每个传统镜头拆成五个生成请求，并给每段统一填写固定秒数。",
+      "with_skill_output": "evals/fixtures/expected-generation-plan.md",
+      "assertions": [
+        "1-01到1-04保持为一条连续动作单元",
+        "1-05因时间地点变化拆分",
+        "单元表包含规划时长和参考图包",
+        "未指定模型且项目未声明上限时规划时长写待模型校准",
+        "专用首帧仅作为条件建议",
+        "不出现LibTV图片编号或最终Prompt"
+      ],
+      "human_notes": "检查单元是否围绕声音、动作和视线形成可理解因果链。"
+    },
+    {
+      "id": "reference-bundle-duration-merge",
+      "prompt": "这一段都使用同一张楼梯环境母图和同一组角色图，项目声明单次最多30秒；请切视频单元。",
+      "input_files": [],
+      "baseline_output": "按问答、反应和情节节拍拆成多个短单元。",
+      "with_skill_output": "先建立相同参考图包，估算完整台词、动作和反应气口；总时长不超过30秒时合并为一次生成请求，超过时才在参考图兼容的自然位置拆分。",
+      "assertions": [
+        "参考图包和规划时长先于动作节拍判断",
+        "同一参考图包且容量可容纳时采用最大可行合并",
+        "30秒标记为用户或项目声明而不是官方模型结论",
+        "新的问答或反应不自动成为切点"
+      ],
+      "human_notes": "检查是否从最少稳定生成请求出发，而不是从剧情节拍分类出发。"
+    },
+    {
+      "id": "semantic-source-contradiction",
+      "prompt": "审核导演稿：前文角色只说加联系方式，后文却把这一连串事件明确回收为连续表白。",
+      "input_files": [],
+      "baseline_output": "因逐字复制和哈希一致而直接判为通过。",
+      "with_skill_output": "指出事件类型与后文回收不一致，并核对表白目标、说话对象和画面阻拦对象；未获用户确认前不自行改写。",
+      "assertions": [
+        "哈希一致不等于语义通过",
+        "明确检查人物目标、说话对象、事件类型和后文回收",
+        "AI主动修复前先向用户提出最小差异"
+      ],
+      "human_notes": "使用中性合成案例，不写入真实项目人物和路径。"
+    },
+    {
+      "id": "coverage-and-relationship-anchor",
+      "prompt": "审核通过后切成视频单元，并判断反打是否需要新的关系参考图。",
+      "input_files": [
+        "evals/fixtures/director-sample.md"
+      ],
+      "baseline_output": "按镜号切分但不核对遗漏；直接用环境母图替代反打中的人物关系。",
+      "with_skill_output": "每个镜号进入一个主单元；复用、补拍或省略显式标注；新半空间需要精确左右、深度和视线时建议机位关系锚点。",
+      "assertions": [
+        "不存在无人承接或无意重复归属的镜号",
+        "环境母图不会被当作具体机位的人物关系锚点",
+        "同侧人物不使用过肩或前景肩膀制造错误对置关系",
+        "只选择关系锚点，不越权生成资产或最终Prompt"
+      ],
+      "human_notes": "检查新增规则是否保持轻量，只补覆盖门禁和关系锚点判断。"
+    },
+    {
+      "id": "mutation-authority",
+      "prompt": "把1-04改成低机位近景，直接改母版。",
+      "input_files": [
+        "evals/fixtures/director-sample.md"
+      ],
+      "baseline_output": "无论修改由谁提出都先等待确认，或AI自行改写剧情。",
+      "with_skill_output": "用户发起的纯镜头修改直接更新导演母版；AI主动提出的改动仍需确认。",
+      "assertions": [
+        "只修改导演母版，不修改剧情事件和台词",
+        "修改后重新计算源哈希",
+        "创建新vNNN输出而不覆盖旧版本"
+      ],
+      "human_notes": "需要真实运行时才能验证文件修改和版本递增；当前仅为行为规格。"
+    },
+    {
+      "id": "stale-source-stop",
+      "prompt": "继续用上次的生成计划往下做。",
+      "input_files": [],
+      "baseline_output": "不检查源稿变化，直接沿用旧计划。",
+      "with_skill_output": "重新计算导演母版SHA-256；不一致时将旧计划视为stale_source并停止下游。",
+      "assertions": [
+        "源哈希不一致时不得继续使用旧计划",
+        "只重做受影响范围",
+        "不把旧approved文字当作哈希一致的替代证据"
+      ],
+      "human_notes": "需要真实文件变更测试验证哈希门禁。"
+    },
+    {
+      "id": "visual-card-and-binding-separation",
+      "prompt": "把这一场做成左图右文审核卡；没有对应图就留空。通过后再列每个视频段绑定哪些图。",
+      "input_files": [],
+      "baseline_output": "为了版面完整给每个镜头硬配一张相似旧图，并把审核卡里出现的所有图片自动绑定给模型。",
+      "with_skill_output": "一镜一行，左侧只放准确对应的轻量缩略图，右侧写最少够判断的镜头信息；无准确图写—。通过后另做逐段绑定表，只列实际进入模型的图片与单一职责。",
+      "assertions": [
+        "一镜一行且为左图右文结构",
+        "无准确对应图时明确留空",
+        "右侧只保留必要景别机位动作表情情绪和台词",
+        "用户审核卡使用约120到160px小缩略图",
+        "用户审核卡不展示素材职责哈希或状态表",
+        "每个视频段逐镜列出画面和台词",
+        "审核图片不自动升级为绑定图片",
+        "逐段绑定表区分绑定、仅审核、不使用和缺口",
+        "不出现LibTV图片编号或平台连线"
+      ],
+      "human_notes": "检查卡片是否轻便易开、图片是否真正对应镜号，以及绑定清单是否比审核展示更克制。"
+    },
+    {
+      "id": "project-column-and-current-selection",
+      "prompt": "项目要求六列；旧导演稿哈希未变但已有新的采用决定。审核当前片段。",
+      "input_files": [],
+      "baseline_output": "用旧稿和严格四列默认覆盖用户约定。",
+      "with_skill_output": "先确认当前采用范围，再按项目六列输出；旧稿哈希相同不证明仍可用。",
+      "assertions": [
+        "用户／项目列式优先",
+        "采用关系先于哈希检查",
+        "机械检查不冒充导演通过"
+      ],
+      "human_notes": "静态行为规格，非真实模型对照测试。"
+    }
+  ],
+  "missing_evidence": [
+    "没有 provider-backed 模型运行比较",
+    "没有人工盲评",
+    "真实母版写回和跨文件同步需在用户调用时验证"
+  ]
+}

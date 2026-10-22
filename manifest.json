@@ -1,0 +1,81 @@
+{
+  "name": "shot-reviewer",
+  "version": "1.2.3",
+  "owner": "local-user",
+  "updated_at": "2026-10-22",
+  "status": "active",
+  "maturity_tier": "production",
+  "lifecycle_stage": "public-release-candidate",
+  "context_budget_tier": "production",
+  "review_cadence": "after each completed episode or quarterly",
+  "target_platforms": [
+    "openai",
+    "claude",
+    "generic",
+    "agent-skills-compatible"
+  ],
+  "intent": {
+    "job_to_be_done": "Turn an existing detailed director master into a compact user/project-column shot review with a four-column fallback, a stable left-image/right-copy Markdown or static HTML review card, and an approved generation-unit reference-image binding plan.",
+    "target_users": [
+      "episodic video creators",
+      "AI video directors",
+      "editors reviewing director scripts before generation"
+    ],
+    "inputs": [
+      "required director master path",
+      "required scene or shot review scope",
+      "optional story baseline",
+      "optional style bible",
+      "optional approved asset inventory",
+      "optional target video model",
+      "optional project-declared duration and reference-input constraints"
+    ],
+    "outputs": [
+      "versioned shot-review.md using user/project columns (four-column fallback)",
+      "versioned visual-review-card.md or script-free visual-review-card.html with aligned video-unit bindings and shot explanations",
+      "versioned generation-plan.md with planned duration, reference bundles, generation units and explicit per-unit image binding states"
+    ],
+    "exclusions": [
+      "screenplay adaptation",
+      "art direction and asset generation",
+      "final image or video prompt compilation",
+      "LibTV binding or execution",
+      "interactive HTML review desk or stateful approval UI",
+      "editing"
+    ]
+  },
+  "release_gates": [
+    "root_entrypoint_isolation",
+    "validate_skill",
+    "prior_art_research",
+    "source_sha256_freshness",
+    "selected_column_contract",
+    "shot_review_approval_before_generation_plan",
+    "visual_review_images_separate_from_model_bindings",
+    "static_html_link_and_viewport_check",
+    "semantic_reference_selection_only",
+    "trigger_eval",
+    "recorded_output_fixture",
+    "skill_ir",
+    "local_release_check"
+  ],
+  "permissions": {
+    "network": "read-only official model capability lookup when needed",
+    "file_write": "versioned shot-review artifacts and explicitly authorized source edits only",
+    "external_generation": "forbidden",
+    "libtv_execution": "forbidden",
+    "publication": "not requested"
+  },
+  "evidence_boundary": {
+    "validated": [
+      "local package structure",
+      "trigger fixtures",
+      "recorded static output fixtures"
+    ],
+    "missing": [
+      "provider-backed generation comparison",
+      "human blind review",
+      "long-term multi-project usage"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{SCENE_TITLE}} · 图文审核</title>
+<style>body{margin:0;background:#f4f3ee;color:#263c39;font-family:"Microsoft YaHei",sans-serif;font-size:17px;line-height:1.8}main{max-width:1080px;margin:auto;padding:32px 28px 70px}header{padding-bottom:24px;border-bottom:2px solid #748b7e}h1{font-size:30px;margin:0 0 10px}header p{margin:8px 0}.small,.meta{font-size:13px;color:#687970}.shot{display:grid;grid-template-columns:180px minmax(0,1fr);gap:26px;padding:28px 0;border-bottom:1px solid #d6dcd5;break-inside:avoid}aside{padding-top:30px}aside img{display:block;width:160px;height:auto;border-radius:3px}.caption{font-size:12px;color:#687970;line-height:1.6;max-width:165px}.empty{width:160px;height:90px;display:grid;place-items:center;color:#9ca69e;border:1px dashed #d2dad3}h2{font-size:21px;margin:0 0 12px}.camera,.sound{font-size:13px;line-height:1.7;color:#64746b}.camera{margin:4px 0 12px}section p{margin:8px 0}.line{border-left:3px solid #c4b49c;padding-left:12px;color:#333b35}.meta{letter-spacing:.3px}a{color:#466a58}footer{font-size:13px;padding-top:24px;color:#687970}@media(max-width:650px){main{padding:20px 14px}.shot{grid-template-columns:120px minmax(0,1fr);gap:14px}aside img,.empty{width:110px}.caption{max-width:110px}body{font-size:16px}h1{font-size:25px}}</style>
+</head>
+<body><main>
+<header>
+<div class="small">{{PROJECT_AND_VERSION_STATUS}}</div>
+<h1>{{SCENE_TITLE}}</h1>
+<p>{{EVENT_FLOW}}</p>
+<p class="small">{{SHOT_AND_IMAGE_COUNTS}}</p>
+<p class="small">{{GLOBAL_CONSTRAINTS}}</p>
+</header>
+<!-- 以下 article 每镜重复一次。转义文本；可选字段没有源信息时整段省略。 -->
+<article class="shot" id="{{SHOT_ANCHOR}}">
+<aside>
+<!-- 无图时用 <div class="empty" aria-label="没有准确对应的旧图">—</div> 替换下面图片与图注。 -->
+<a href="{{LOCAL_FULL_IMAGE_PATH}}"><img width="160" src="{{LOCAL_THUMBNAIL_PATH}}" alt="{{SHOT_TITLE}}"></a>
+<p class="caption">{{IMAGE_MATCH_NOTE}}</p>
+</aside>
+<section>
+<div class="meta">{{SCENE_TIME_OPTIONAL_DURATION}}</div>
+<h2>{{SHOT_ID}}　{{SHOT_TITLE}}</h2>
+<p class="camera">{{SOURCE_CAMERA_AND_MOVEMENT}}</p>
+<p>{{VISIBLE_ACTION}}</p>
+<!-- 每位说话人重复一行；无台词则省略。 -->
+<p class="line"><b>{{SPEAKER}}：</b>{{EXACT_DIALOGUE}}</p>
+<p class="sound">{{SOURCE_SOUND}}</p>
+</section>
+</article>
+<footer>{{REVIEW_SCOPE_NOTE}}</footer>
+</main></body>
+</html>

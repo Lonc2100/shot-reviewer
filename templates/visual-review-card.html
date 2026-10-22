@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{SCENE_TITLE}} · 视频段审核卡</title>
+  <style>
+    :root{--bg:#f5f3ef;--paper:#fff;--ink:#17202a;--muted:#64707c;--line:#e3ded6;--accent:#2f8582}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,"Microsoft YaHei",sans-serif}
+    main{max-width:1520px;margin:auto;padding:24px 20px 56px} h1{margin:0;font-size:clamp(30px,3vw,48px)}
+    .unit{display:grid;grid-template-columns:116px 456px minmax(0,1fr);margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 8px 24px #382f2210}
+    .band{padding:20px 14px;background:var(--accent);color:#fff;text-align:center}.band b{display:block;font-size:34px}.band small{display:block;margin-top:16px}
+    .assets,.review{padding:18px}.assets{border-right:1px solid var(--line)}.assets h2,.review h2{margin:0 0 12px;font-size:16px}
+    .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.thumbs a{color:inherit;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#faf9f7;text-align:center}.thumbs img{display:block;width:100%;height:96px;object-fit:cover}.thumbs span{display:block;padding:5px;font-size:13px}
+    .mood,.end{padding:9px 12px;border-radius:9px;background:#eef6f5}.shot{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:10px 2px;border-top:1px solid var(--line)}.shot-id{font-weight:700;color:var(--accent)}.dialogue{margin-top:6px;padding:6px 10px;background:#f6f4f1;border-left:3px solid var(--accent)}
+    @media(max-width:980px){.unit{grid-template-columns:86px 1fr}.review{grid-column:1/-1;border-top:1px solid var(--line)}.assets{border-right:0}.thumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:620px){main{padding:16px 10px}.unit{grid-template-columns:1fr}.band{text-align:left}.band b,.band small{display:inline;margin-right:14px}.assets,.review{padding:14px}.thumbs{grid-template-columns:repeat(2,1fr)}.review{grid-column:auto}.shot{grid-template-columns:34px 1fr}}
+  </style>
+</head>
+<body><main>
+  <header><h1>{{SCENE_TITLE}}</h1><p>{{VERSION}}｜左侧核对绑定图，右侧核对画面与台词</p></header>
+  <!-- 每个视频段复制一个 section；五张绑定图保留 3+2。图片只用相对路径，并链接原图。 -->
+  <section class="unit">
+    <aside class="band"><b>{{UNIT_ID}}</b><small>{{SHOT_RANGE}}</small><small>{{PROGRESSION}}</small></aside>
+    <div class="assets"><h2>绑定图</h2><div class="thumbs">{{THUMBNAILS}}</div></div>
+    <div class="review"><div class="mood"><b>意境</b>　{{MOOD}}</div>{{SHOT_ROWS}}<div class="end"><b>收尾</b>　{{END_STATE}}</div></div>
+  </section>
+</main></body>
+</html>

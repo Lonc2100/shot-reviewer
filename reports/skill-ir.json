@@ -1,0 +1,206 @@
+{
+  "schema_version": "2.0.0-qiaomu-lite",
+  "generated_at": "2026-10-22",
+  "package": {
+    "name": "shot-reviewer",
+    "version": "1.2.3",
+    "owner": "local-user",
+    "maturity_tier": "production",
+    "lifecycle_stage": "public-release-candidate",
+    "upstream_inspiration": null,
+    "upstream_sync": {}
+  },
+  "intent": {
+    "description": "以已有详细导演稿或分镜稿为输入，进行轻量镜头审核、景别与特殊角度复核、 动作和空间连续性检查、视频生成单元切分，以及角色图、环境母图、道具/VFX图、 专用首帧或首尾帧的参考图选择计划。用户说“审核镜头”“检查景别角度” “把这段切成视频单元”“这些单元该用什么关键图”、要求四列或项目六列 MD 审核稿、\n  一镜一行的左图右文审核卡、“按舒服版做图文审核稿”、静态 HTML 视频段审核卡，或询问每个视频段实际绑定哪些图片时使用。\n不用于剧本改编、导演定调、九列分镜/xlsx、美术风格与资产生成、最终图像或视频提示词、 打开交互式 HTML/插件审核台、LibTV 实际连线与图片编号、节点运行或后期剪辑。\n",
+    "job_to_be_done": "Turn an existing detailed director master into a compact user/project-column shot review with a four-column fallback, a stable left-image/right-copy Markdown or static HTML review card, and an approved generation-unit reference-image binding plan.",
+    "target_users": [
+      "episodic video creators",
+      "AI video directors",
+      "editors reviewing director scripts before generation"
+    ],
+    "inputs": [
+      "required director master path",
+      "required scene or shot review scope",
+      "optional story baseline",
+      "optional style bible",
+      "optional approved asset inventory",
+      "optional target video model",
+      "optional project-declared duration and reference-input constraints"
+    ],
+    "outputs": [
+      "versioned shot-review.md using user/project columns (four-column fallback)",
+      "versioned visual-review-card.md or script-free visual-review-card.html with aligned video-unit bindings and shot explanations",
+      "versioned generation-plan.md with planned duration, reference bundles, generation units and explicit per-unit image binding states"
+    ],
+    "exclusions": [
+      "screenplay adaptation",
+      "art direction and asset generation",
+      "final image or video prompt compilation",
+      "LibTV binding or execution",
+      "interactive HTML review desk or stateful approval UI",
+      "editing"
+    ],
+    "qiaomu_defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "用导演稿审核镜头，先检查景别角度。",
+      "把这份分镜稿做成四列 Markdown，方便我审核分镜。",
+      "镜头审核已经通过，把这一段切成视频生成单元。",
+      "按导演母版把第二场做单元切分。",
+      "每个视频单元应该绑定哪些参考图，先给我选择计划。",
+      "把这一场做成左图右文的图文审核卡，没有对应图片就留空。",
+      "Markdown 图片和画面台词会错位，按方案 A 做成静态 HTML 审核卡。",
+      "审核卡通过了，列出每个视频段实际绑定哪几张图。",
+      "给这份导演稿做 MD审核，只保留四列。",
+      "Review shots from this director script and return a four-column Markdown table.",
+      "Split these generation units and choose the required reference images or keyframes.",
+      "这份分镜表的连续性检查通过后，再切成单元。",
+      "检查导演稿中的特殊机位，然后给首帧参考图建议。",
+      "按项目六列约定审核导演稿，检查镜头和连续性。"
+    ],
+    "should_not_trigger": [
+      "把这篇小说做剧本改编。",
+      "从导演定调开始，给我完整九列分镜和xlsx。",
+      "给这一镜写视频提示词，适配 Seedance。",
+      "打开分镜审核台继续审场2。",
+      "把这些图片绑定LibTV并运行节点。",
+      "根据美术风格生成角色图和场景资产。",
+      "把现有视频后期剪辑成成片。"
+    ],
+    "near_neighbor": [
+      "这个单镜头的运镜怎么写得更有冲击力？",
+      "帮我审核当前导出的 MP4 有没有穿帮。",
+      "从这篇文章里选一张主视觉图片。",
+      "解释一下首尾帧生成是什么。",
+      "用 cinema-dna 给这场关键戏探索三种构图和观看立场。"
+    ]
+  },
+  "workflow": {
+    "router_rules": [
+      "需要重设计观看对象、调度、转场或镜头链：按项目导演入口使用 `story-video-handbook` 等已选导演流程；本 Skill 不以重排表格代替导演创作。完整风格融合、九列分镜或 xlsx 可交 `director-master`。",
+      "关键镜头尚未定构图，且需要探索观看立场、关系压力、视线流量或空间权力时：可先用 `cinema-dna-21x9x3` 的剧集镜头顾问模式；用户批准后再回写导演母版。本 Skill 不自动把所有镜头送去探索。",
+      "打开交互式审核台、正式总账、关键图回传或生产版本推进：交给 `short-drama-production-pipeline` 或正式审核台插件；只读静态 HTML 审核卡仍属于本 Skill。",
+      "最终生图/生视频提示词：交给相应提示词 Skill。",
+      "LibTV 上传、连线、编号回读、预提交和运行：交给 `libtv-skill`。",
+      "剧本改编、美术生产、生成执行和后期剪辑：不属于本 Skill。"
+    ],
+    "compact_workflow": [
+      "先按当前用户决定和项目采用关系选择导演母版；哈希一致或版本号更高不代表仍是当前采用稿。底层剧本用于剧情、事件和台词一致性对照。",
+      "计算导演母版及已提供对照文件的 SHA-256，记录路径、版本、范围和哈希。",
+      "如果已有审核稿或生成计划的源哈希与当前母版不一致，将它视为 `stale_source`，不得继续传给下游。",
+      "不建立总账、数据库或交互式 HTML 审核台；用户明确要求或 Markdown 无法稳定保持图文对齐时，允许生成无脚本、可离线打开的静态 HTML 审核卡。",
+      "不默认增加时长、起幅、收幅、衔接、状态或内部备注列。",
+      "平视、普通正面、普通固定机位省略；特殊角度、机位关系和必要运镜才写。",
+      "画面内容只写最重要的可见主体、动作和结果，不写提示词级材质、光效或装饰。",
+      "导演连续性检查在内部完成；只有存在风险或需要用户决定时，才在表格外用极短说明提出。",
+      "用户明确要求的修改：直接更新其指定的母版内容，并重算受影响范围。",
+      "AI 主动建议的修改：先给出“原内容 → 建议内容 → 原因”，得到用户确认后才能更新母版。",
+      "纯景别、角度、站位、运镜或画面表达变化只改导演母版。",
+      "剧情事件或台词变化且提供了底层剧本时，默认同步更新底层剧本和导演母版；若用户明确只改其中一份，以用户指令为准，并标记另一份待同步。",
+      "母版发生变化后创建新的 `vNNN` 输出版本，不覆盖旧批准稿。",
+      "一个生成单元是一次实际视频生成请求准备提交的连续内容，不等于一个传统镜头，也不等于一个剧情节拍。",
+      "先为连续镜头建立参考图包：环境／机位母图、参与角色、关键道具／VFX、必要的关系锚点；再读取目标模型或项目已声明的时长与输入能力。",
+      "默认采用“最大可行合并”：参考图包、地点时间、光向、现实层、核心空间关系和连续表演均兼容时，先尽量合并，再检查容量。",
+      "只有参考图包发生实质变化、地点／时间／现实层或空间权威改变、预计时长超过已知上限、对白／动作负载过高，或模型能力不容纳时才拆分。单纯出现新的问答、反应或情节节拍，不足以单独成段。",
+      "镜头审核粒度与生成请求粒度分开：镜头表可以细，生成单元应尽量少而稳定。",
+      "切分完成后做覆盖检查：审核范围内每个镜号必须进入一个主单元；复用插镜、补拍或主动省略必须单独标明，不能无意漏镜或重复归属。",
+      "不使用通用固定秒数。目标模型已确定时核对当前官方能力或平台 schema；用户或项目已明确时长上限时，可以据此估算并填写“规划时长”，同时标记依据为 `用户／项目声明`。两者都没有时才写 `待模型校准`，不得从记忆猜测。"
+    ],
+    "gate_ladder": [
+      "未锁定唯一导演母版和审核范围：不生成审核稿。",
+      "当前列式的镜头审核未获用户通过：不生成视频单元计划，除非用户明确要求探索并标为假设。",
+      "源 SHA-256 与审核稿记录不一致：旧计划视为 `stale_source`，不进入下游。",
+      "资产未批准：只记为候选或缺口，不升级为正式参考。",
+      "模型能力未核对：写 `待模型校准`，不填写固定时长或首尾帧能力。",
+      "本 Skill 交付完成：停止在语义参考图选择，不编写最终 Prompt 或执行平台操作。"
+    ],
+    "output_contract": [
+      "`shot-review.md` 遵守用户／项目明确列式；未指定时默认四列。机械格式通过不等于导演语义通过。",
+      "逐镜图文审核默认舒服版静态 HTML：一镜一行、左图右文，直接复用 `templates/visual-review-card-comfortable.html`；一个视频段绑定多图时另用三栏模板。无准确图就留空，素材职责、哈希和状态不占用户审核版面，审核用图片不得自动升级为模型绑定图。",
+      "普通平视不写；俯拍、仰拍、顶拍、高低机位、主观、过肩、特殊侧背关系和必要运镜明确写。",
+      "画面内容必须可见、简洁、可审核。",
+      "`generation-plan.md` 必须可追溯到镜号和源稿 SHA-256，并在单元表中展示规划时长与参考图包。",
+      "每个视频段必须列出实际绑定图片及其单一职责；仅审核图片、不使用旧图和资产缺口不能混入绑定清单。",
+      "未指定模型且项目未声明时长能力时，不强填秒数或假设首尾帧能力；项目明确的时长上限可以作为规划假设，但不能冒充官方模型能力。",
+      "专用构图关键帧不得登记为通用人物或环境资产。",
+      "源哈希不一致时必须停止下游使用。"
+    ]
+  },
+  "resources": {
+    "references": [
+      "references\\comfortable-review-layout.md",
+      "references\\director-review-rules.md",
+      "references\\execution-contract.md",
+      "references\\generation-unit-rules.md",
+      "references\\reference-selection-rules.md",
+      "references\\source-authority-and-boundaries.md",
+      "references\\visual-review-card-rules.md"
+    ],
+    "scripts": [],
+    "evals": [
+      "evals\\fixtures\\director-sample.md",
+      "evals\\fixtures\\expected-generation-plan.md",
+      "evals\\fixtures\\expected-shot-review.md",
+      "evals\\output_cases.json",
+      "evals\\trigger_cases.json"
+    ],
+    "reports": [
+      "reports\\creation-handoff.md",
+      "reports\\package-validation.json",
+      "reports\\prior-art-research.md",
+      "reports\\skill-ir.json",
+      "reports\\trigger-eval.json"
+    ]
+  },
+  "portability": {
+    "canonical_format": "agent-skills",
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": {
+      "mode": "manual-or-description-match",
+      "paths": []
+    },
+    "execution": {
+      "context": "inline",
+      "shell": "pwsh"
+    },
+    "trust": {
+      "source_tier": "local",
+      "remote_inline_execution": "forbid",
+      "generated_public_claims": "evidence-bound"
+    },
+    "permissions": {
+      "network": "read-only official model documentation or provider schema lookup only when a target model affects unit slicing or reference mode",
+      "file_write": "versioned artifacts/shot-review outputs; director master only on explicit user instruction or after approval of an AI-proposed change; paired baseline only for approved story/dialogue synchronization",
+      "subprocess": "read-only search, SHA-256 hashing, package validation and eval; no model run, upload, paid submission, publication or deletion",
+      "interactive": "ask only when source authority, review scope, or a story-changing choice cannot be discovered"
+    },
+    "degradation": {
+      "openai": "canonical-local-skill",
+      "claude": "neutral-markdown-workflow",
+      "generic": "markdown-workflow",
+      "agent-skills-compatible": "canonical-source"
+    }
+  },
+  "gates": {
+    "production": [
+      "root-only SKILL.md",
+      "user/project-selected column contract, four-column fallback",
+      "source SHA-256 freshness check",
+      "shot review approval before generation planning",
+      "semantic reference selection separated from platform binding",
+      "trigger and recorded-fixture evals"
+    ]
+  },
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}
